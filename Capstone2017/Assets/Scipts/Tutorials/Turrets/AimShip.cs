@@ -14,6 +14,7 @@ public class AimShip : MonoBehaviour
     public Transform bulletExit;
 
 
+
     void Start()
     {
         spriteRend.sprite = aiming;

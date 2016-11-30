@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEditor;
+
+
 
 public class KillFoe : MonoBehaviour
 {/*This is attached to the bullet, so that the bullet can trigger on the colliders
@@ -12,6 +13,7 @@ public class KillFoe : MonoBehaviour
         gameController = GameObject.Find("GameControllerTurrets");
 
     }
+
 
 	void Update ()
     {//This will destroy the object when it goes too far out in space

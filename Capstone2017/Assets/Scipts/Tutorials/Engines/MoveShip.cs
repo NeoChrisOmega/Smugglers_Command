@@ -17,7 +17,7 @@ public class MoveShip : MonoBehaviour
 
     void Update()
     {
-        if (gameController.paused != true)
+        /*if (gameController.paused != true)
         {
             #region MovementAndRestrictions
             if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A))
@@ -63,7 +63,7 @@ public class MoveShip : MonoBehaviour
             }
             #endregion
             #endregion
-        }
+        }*/
     }
 
     #region Movements
@@ -131,6 +131,7 @@ public class MoveShip : MonoBehaviour
     }
     #endregion
     #endregion
+
 
     public void OnTriggerEnter(Collider spaceObject)
     {//If this collides with one of the objects, kill the object and damage ship

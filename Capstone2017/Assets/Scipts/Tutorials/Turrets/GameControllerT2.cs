@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
-using UnityEditor;
 
 public class GameControllerT2 : MonoBehaviour
 {
@@ -42,6 +41,7 @@ public class GameControllerT2 : MonoBehaviour
         InvokeRepeating("CreateTheObject", 1.0f, 2f);
     }
     
+
     void Update()
     {
         if (paused == true && Input.GetKeyUp(KeyCode.Return))
