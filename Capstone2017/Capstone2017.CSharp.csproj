@@ -65,9 +65,10 @@
   <ItemGroup>
     <Compile Include="Assets\Scipts\Scenes\GameControllerLS.cs" />
     <Compile Include="Assets\Scipts\Scenes\GameControllerMM.cs" />
-    <Compile Include="Assets\Scipts\Tutorials\GameControllerT1.cs" />
-    <Compile Include="Assets\Scipts\Tutorials\KillObject.cs" />
-    <Compile Include="Assets\Scipts\Tutorials\MoveShip.cs" />
+    <Compile Include="Assets\Scipts\Tutorials\Engines\KillObject.cs" />
+    <Compile Include="Assets\Scipts\Tutorials\Engines\MoveShip.cs" />
+    <Compile Include="Assets\Scipts\Tutorials\GameController\ConsoleText.cs" />
+    <Compile Include="Assets\Scipts\Tutorials\GameController\GameControllerT1.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
