@@ -276,7 +276,7 @@ public class GameControllerLS : MonoBehaviour
     }
     public void tutorial2()
     {//Turrets
-        Debug.Log("tutorial 2");
+        SceneManager.LoadScene("Tutorial2");
     }
     public void tutorial3()
     {//Shields

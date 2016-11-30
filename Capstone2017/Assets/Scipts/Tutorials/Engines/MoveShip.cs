@@ -18,50 +18,53 @@ public class MoveShip : MonoBehaviour
 
     void Update()
     {
-        #region MovementAndRestrictions
-        if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A))
+        if (gameController.paused != true)
         {
-            if (isMoving == false)
+            #region MovementAndRestrictions
+            if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A))
             {
-                isMoving = true;
-                StartCoroutine("MoveLeft");
+                if (isMoving == false)
+                {
+                    isMoving = true;
+                    StartCoroutine("MoveLeft");
+                }
+                else
+                    Debug.Log("Error Sound plays");
             }
-            else
-                Debug.Log("Error Sound plays");
-        }
-        #region OtherStuff
-        if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D))
-        {
-            if (isMoving == false)
+            #region OtherStuff
+            if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D))
             {
-                isMoving = true;
-                StartCoroutine("MoveRight");
+                if (isMoving == false)
+                {
+                    isMoving = true;
+                    StartCoroutine("MoveRight");
+                }
+                else
+                    Debug.Log("Error Sound plays");
             }
-            else
-                Debug.Log("Error Sound plays");
-        }
-        if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W))
-        {
-            if (isMoving == false)
+            if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W))
             {
-                isMoving = true;
-                StartCoroutine("MoveUp");
+                if (isMoving == false)
+                {
+                    isMoving = true;
+                    StartCoroutine("MoveUp");
+                }
+                else
+                    Debug.Log("Error Sound plays");
             }
-            else
-                Debug.Log("Error Sound plays");
-        }
-        if (Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.A))
-        {
-            if (isMoving == false)
+            if (Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.A))
             {
-                isMoving = true;
-                StartCoroutine("MoveDown");
+                if (isMoving == false)
+                {
+                    isMoving = true;
+                    StartCoroutine("MoveDown");
+                }
+                else
+                    Debug.Log("Error Sound plays");
             }
-            else
-                Debug.Log("Error Sound plays");
+            #endregion
+            #endregion
         }
-        #endregion
-        #endregion
     }
 
     #region Movements
