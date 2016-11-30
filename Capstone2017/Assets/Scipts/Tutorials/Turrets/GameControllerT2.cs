@@ -1,17 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEditor;
 
 public class GameControllerT2 : MonoBehaviour
 {
+    #region Variable Stuff
     public GameObject spawnObject;
     public Transform[] spawnpoints;// This is a list of the empty gameobject posisions//public GameObject spaceObject; // This is the EnemyShip prefab
     public GameObject foeShip;
     public GameObject[] filledPoints;
+    //public int[] filledPointsIDs;
 
     public bool paused = true;
     public Canvas pauseMenu;
     public ConsoleTextTurrets consoleText;
+    #endregion
 
     void Start ()
     {
@@ -65,6 +69,9 @@ public class GameControllerT2 : MonoBehaviour
         }
         GameObject newFoeShip = Instantiate(foeShip, spawnpoints[randomSpawn].position, spawnpoints[0].rotation) as GameObject;
         filledPoints[randomSpawn] = newFoeShip;
+
+
+        
     }
 
     int CheckTheSpawn()

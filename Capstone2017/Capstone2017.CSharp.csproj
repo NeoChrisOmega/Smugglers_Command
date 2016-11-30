@@ -65,6 +65,11 @@
   <ItemGroup>
     <Compile Include="Assets\Scipts\Scenes\GameControllerLS.cs" />
     <Compile Include="Assets\Scipts\Scenes\GameControllerMM.cs" />
+    <Compile Include="Assets\Scipts\Tutorials\Cameras\AimShipT3.cs" />
+    <Compile Include="Assets\Scipts\Tutorials\Cameras\ConsoleTextTurretsT3.cs" />
+    <Compile Include="Assets\Scipts\Tutorials\Cameras\GameControllerT3.cs" />
+    <Compile Include="Assets\Scipts\Tutorials\Cameras\KillFoeT3.cs" />
+    <Compile Include="Assets\Scipts\Tutorials\Cameras\MoveShipT3.cs" />
     <Compile Include="Assets\Scipts\Tutorials\Engines\ConsoleTextEngines.cs" />
     <Compile Include="Assets\Scipts\Tutorials\Engines\GameControllerT1.cs" />
     <Compile Include="Assets\Scipts\Tutorials\Engines\KillObject.cs" />

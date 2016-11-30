@@ -5,7 +5,13 @@ using UnityEditor;
 public class KillFoe : MonoBehaviour
 {/*This is attached to the bullet, so that the bullet can trigger on the colliders
     of both the foes and the objects*/
-    public GameControllerT2 gameController;
+    GameObject gameController;
+
+    void Start()
+    {
+        gameController = GameObject.Find("GameControllerTurrets");
+
+    }
 
 	void Update ()
     {//This will destroy the object when it goes too far out in space
@@ -17,15 +23,9 @@ public class KillFoe : MonoBehaviour
 
     void OnTriggerEnter(Collider ship)
     {//Checks to see if you hit, if you did destroys it
-        
-        /*This doesn't work, but I need to think of a way to do this later on in development
-        GameObject referencFoeShip = gameController.foeShip;
-        if (ship.gameObject == referencFoeShip)
-        {
-            Debug.Log("You killed it");
-        }*/
+
         Destroy(ship.gameObject);
-        //gameController.GotKill();
+        gameController.GetComponent<GameControllerT2>().GotKill();
         Destroy(this.gameObject);
     }
 }

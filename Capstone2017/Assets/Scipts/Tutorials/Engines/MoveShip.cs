@@ -3,7 +3,6 @@ using System.Collections;
 
 public class MoveShip : MonoBehaviour
 {//This goes onto the ship for the Engines System
-    public float movementSpeed;
     float currentX, currentY;
     bool isMoving;
     public GameControllerT1 gameController;
@@ -135,6 +134,7 @@ public class MoveShip : MonoBehaviour
 
     public void OnTriggerEnter(Collider spaceObject)
     {//If this collides with one of the objects, kill the object and damage ship
+        Debug.Log("Trigger Enter");
         Destroy(spaceObject.gameObject);
         gameController.GotHit();
     }

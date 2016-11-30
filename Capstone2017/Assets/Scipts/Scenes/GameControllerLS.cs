@@ -12,6 +12,7 @@ public class GameControllerLS : MonoBehaviour
     public Camera levelSelectCamera;//This is the camera
     float yRotation;//This keeps track of where the camera rotation is
     float xRotation;
+    bool isMoving;
 
     bool tutorialOptions = false;
 
@@ -20,24 +21,24 @@ public class GameControllerLS : MonoBehaviour
         #region MoveCamera
         if (Input.GetKeyUp(KeyCode.Alpha1) && tutorialOptions == false)
         {
-            MoveBack();
+            StartCoroutine("MoveLeft");
         }
         #region OtherInputs
         if (Input.GetKeyUp(KeyCode.Alpha2) && tutorialOptions == false)
         {
-            MoveUp();
+            StartCoroutine("MoveUp");
         }
         if (Input.GetKeyUp(KeyCode.Alpha3) && tutorialOptions == false)
         {
-            MoveLeft();
+            StartCoroutine("MoveLeft");
         }
         if (Input.GetKeyUp(KeyCode.Alpha4) && tutorialOptions == false)
         {
-            MoveRight();
+            StartCoroutine("MoveRight");
         }
         if (Input.GetKeyUp(KeyCode.Alpha5) && tutorialOptions == false)
         {
-            MoveDown();
+            StartCoroutine("MoveDown");
         }
         #endregion
         #endregion
@@ -64,6 +65,7 @@ public class GameControllerLS : MonoBehaviour
             }
         }
         #endregion
+
         #region TutorialButtons
         if (Input.GetKeyUp(KeyCode.Backspace))
         {
@@ -107,7 +109,9 @@ public class GameControllerLS : MonoBehaviour
         }
         #endregion
         #endregion
+
     }
+
     #region TheMovements
     public void MoveLeft()
     {//Turns the camera to the left side
@@ -141,7 +145,7 @@ public class GameControllerLS : MonoBehaviour
     }
     public void ExitGame()
     {//Goes to the LevelSelect scene, should pass off any information that LS GameController should know
-        Debug.Log("You Pressed Exit");
+        Application.Quit();
     }
     #endregion
     #endregion

@@ -13,7 +13,7 @@ public class ConsoleTextTurrets : MonoBehaviour
     void Start ()
     {
         cargoCondition = "Good";
-        enemiesLeft = 60;
+        enemiesLeft = 20;
     }
 
     void Update()
@@ -44,6 +44,5 @@ public class ConsoleTextTurrets : MonoBehaviour
     public void GotAKill()
     {
         enemiesLeft--;
-        Debug.Log(enemiesLeft);
     }
 }
