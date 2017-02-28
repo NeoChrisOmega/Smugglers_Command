@@ -40,7 +40,7 @@ public class GameControllerT3 : MonoBehaviour
         Time.timeScale = 0;
         PauseGame(true);
         InvokeRepeating("CreateTheObject", 1.0f, 2.0f);
-        InvokeRepeating("CreateTheShip", 2f, 2.0f);
+        InvokeRepeating("CreateTheShip", 5f, 4.0f);
         frontCamera.enabled = true;
         backCamera.enabled = false;
         interiorCamera.enabled = false;

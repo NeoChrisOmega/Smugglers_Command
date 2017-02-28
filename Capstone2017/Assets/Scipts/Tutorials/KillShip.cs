@@ -6,15 +6,13 @@ public class KillShip : MonoBehaviour
     public Rigidbody bullet;//Makes it have physics
     public float bulletExit;
     public MeshRenderer MeshMe;
-    Quaternion rotationB;
 
     // Use this for initialization
     void Start()
     {
-        MeshMe.material = MeshMe.materials[0];
+        MeshMe.material = MeshMe.materials[2];
         bulletExit = this.transform.position.z + 1.5f;
-        InvokeRepeating("Shoot", 5, 3);
-        rotationB.eulerAngles = new Vector3(this.transform.eulerAngles.x, this.transform.eulerAngles.y + 90, this.transform.eulerAngles.z);
+        InvokeRepeating("Shoot", 10, 10);
     }
 
     void Shoot()
@@ -25,7 +23,8 @@ public class KillShip : MonoBehaviour
     IEnumerator Shooting()
     {//                                                                          This mess makes it one z position farther than where it was before
         Rigidbody newBullet = Instantiate(bullet, new Vector3(this.transform.position.x, this.transform.position.y, bulletExit), bullet.rotation) as Rigidbody;
-        newBullet.AddRelativeForce(this.transform.forward, ForceMode.VelocityChange);
+        //newBullet.AddRelativeTorque(transform.forward * -5, ForceMode.VelocityChange);
+        newBullet.AddRelativeForce(transform.forward * 5, ForceMode.VelocityChange);
         MeshMe.material = MeshMe.materials[2];
         float counter = 0f;
         float length = .1f;

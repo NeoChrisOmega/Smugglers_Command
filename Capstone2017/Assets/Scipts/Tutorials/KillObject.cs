@@ -16,6 +16,10 @@ public class KillObject : MonoBehaviour
         if (this.transform.position.z <= -900)
         {
             Destroy(this.gameObject);
-        }	
-	}
+        }
+    }
+    void OnTriggerEnter(Collider thing)
+    {//Checks to see if you hit, if you did destroys it
+        Destroy(this.gameObject);
+    }
 }
