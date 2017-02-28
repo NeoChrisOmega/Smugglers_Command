@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 4f7f3ee23eac8644dbae93f5d2a12ef4
+timeCreated: 1480448853
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - ship: {fileID: 1000013520239078, guid: 6d491f625972c184b875eb11c5b79f49, type: 2}
+  - moveShip: {instanceID: 0}
+  - spaceObject: {fileID: 54000012421930708, guid: 4fc473e03fef26548a20387e5a646362,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
