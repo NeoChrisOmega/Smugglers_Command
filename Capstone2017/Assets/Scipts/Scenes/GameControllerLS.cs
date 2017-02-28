@@ -1,67 +1,130 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameControllerLS : MonoBehaviour
 {
-    public GameObject savedData1;//This is what will store the gameInfo
-    public GameObject missionOptions;//This is what will randomize the levels
-    public GameObject shipData;//This is the ship and crew information
-    public GameObject tutorialsCompleted;//This will show what tutorials are available
+    #region Variable Stuff
+    /*public GameObject saveTab;//This is what will store the gameInfo
+    public GameObject missionsTab;//This is what will randomize the levels
+    public GameObject instructionsTab;//This is the ship and crew information
+    public GameObject tutorialTab;//This will show what tutorials are available*/
+    public GameObject popUpDisplay;
+    public GameObject tutorial1Option;
+    public GameObject tutorial2Option;
+    public GameObject tutorial3Option;
+    public GameObject tutorial4Option;
+    public GameObject chooseTutorialOptions1, chooseTutorialOptions2, chooseTutorialOptions3, chooseTutorialOptions4;
 
     public Camera levelSelectCamera;//This is the camera
     float yRotation;//This keeps track of where the camera rotation is
     float xRotation;
     bool isMoving;
 
+    public AudioSource menuInteraction;
+
     bool tutorialOptions = false;
+    #endregion
+
+    void Start()
+    {
+        //This is for playtesting
+        PlayerPrefs.SetInt("Level2", 1);
+        //This is for playtesting
+
+        if (PlayerPrefs.GetInt("level1") == 1)
+        {
+            tutorial2Option.GetComponent<Image>().color = Color.white;
+        }
+        else
+        {
+            tutorial2Option.GetComponent<Image>().color = Color.grey;
+        }
+        if (PlayerPrefs.GetInt("level2") == 1)
+        {
+            tutorial3Option.GetComponent<Image>().color = Color.white;
+        }
+        else
+        {
+            tutorial3Option.GetComponent<Image>().color = Color.grey;
+        }
+        if (PlayerPrefs.GetInt("level3") == 1)
+        {
+            tutorial4Option.GetComponent<Image>().color = Color.white;
+        }
+        else
+        {
+            tutorial4Option.GetComponent<Image>().color = Color.grey;
+        }
+    }
 
     void Update()//I still need to update the x menus
     {//This is for all the button press checks
         #region MoveCamera
-        if (Input.GetKeyUp(KeyCode.Alpha1) && tutorialOptions == false)
+        if (tutorialOptions == false)
         {
-            StartCoroutine("MoveLeft");
-        }
-        #region OtherInputs
-        if (Input.GetKeyUp(KeyCode.Alpha2) && tutorialOptions == false)
-        {
-            StartCoroutine("MoveUp");
-        }
-        if (Input.GetKeyUp(KeyCode.Alpha3) && tutorialOptions == false)
-        {
-            StartCoroutine("MoveLeft");
-        }
-        if (Input.GetKeyUp(KeyCode.Alpha4) && tutorialOptions == false)
-        {
-            StartCoroutine("MoveRight");
-        }
-        if (Input.GetKeyUp(KeyCode.Alpha5) && tutorialOptions == false)
-        {
-            StartCoroutine("MoveDown");
+            if (Input.GetKeyUp(KeyCode.Alpha1))
+            {
+                menuInteraction.Play();
+                StopAllCoroutines();
+                StartCoroutine("MoveBack");
+            }
+            #region OtherInputs
+            else if (Input.GetKeyUp(KeyCode.Alpha2))
+            {
+                menuInteraction.Play();
+                StopAllCoroutines();
+                StartCoroutine("MoveUp");
+            }
+            else if (Input.GetKeyUp(KeyCode.Alpha3))
+            {
+                menuInteraction.Play();
+                StopAllCoroutines();
+                StartCoroutine("MoveLeft");
+            }
+            else if (Input.GetKeyUp(KeyCode.Alpha4))
+            {
+                menuInteraction.Play();
+                StopAllCoroutines();
+                StartCoroutine("MoveRight");
+            }
+            else if (Input.GetKeyUp(KeyCode.Alpha5))
+            {
+                menuInteraction.Play();
+                StopAllCoroutines();
+                StartCoroutine("MoveDown");
+            }
         }
         #endregion
         #endregion
+
         #region SaveButtons
-        if (Input.GetKeyUp(KeyCode.Return))
+        if (tutorialOptions == false)
         {
-            if (yRotation < 1 && yRotation > -1 && xRotation < -1)
+            if (Input.GetKeyUp(KeyCode.Return))
             {
-                SaveGame();
+                menuInteraction.Play();
+                if (yRotation < 1 && yRotation > -1 && xRotation < -1)
+                {
+                    SaveGame();
+                }
             }
-        }
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            if (yRotation < 1 && yRotation > -1 && xRotation < -1)
+            else if (Input.GetKeyUp(KeyCode.Space))
             {
-                LoadGame();
+                menuInteraction.Play();
+                if (yRotation < 1 && yRotation > -1 && xRotation < -1)
+                {
+                    LoadGame();
+                }
             }
-        }
-        if (Input.GetKeyUp(KeyCode.Backspace))
-        {
-            if (yRotation < 1 && yRotation > -1 && xRotation < -1)
+            else if (Input.GetKeyUp(KeyCode.Backspace))
             {
-                ExitGame();
+                menuInteraction.Play();
+                if (yRotation < 1 && yRotation > -1 && xRotation < -1)
+                {
+                    ExitGame();
+                }
             }
         }
         #endregion
@@ -70,42 +133,58 @@ public class GameControllerLS : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Backspace))
         {
             if (xRotation < 1 && xRotation > -1 && yRotation > 1)
-            {
+            {//This checks to see if you are on the tutorial screen
                 if (tutorialOptions == false)
                 {
+                    chooseTutorialOptions1.GetComponent<Image>().color = Color.grey;
+                    chooseTutorialOptions2.GetComponent<Image>().color = Color.grey;
+                    chooseTutorialOptions3.GetComponent<Image>().color = Color.grey;
+                    chooseTutorialOptions4.GetComponent<Image>().color = Color.grey;
                     tutorialOptions = true;
                 }
                 else if (tutorialOptions == true)
                 {
+                    chooseTutorialOptions1.GetComponent<Image>().color = Color.white;
+                    chooseTutorialOptions2.GetComponent<Image>().color = Color.white;
+                    chooseTutorialOptions3.GetComponent<Image>().color = Color.white;
+                    chooseTutorialOptions4.GetComponent<Image>().color = Color.grey;
                     tutorialOptions = false;
                 }
             }
         }
         #region OtherInputs
-        if (Input.GetKeyUp(KeyCode.Alpha1) && tutorialOptions == true)
-        {
-            tutorialOptions = false;
-            tutorial1();
-        }
-        if (Input.GetKeyUp(KeyCode.Alpha2) && tutorialOptions == true)
-        {
-            tutorialOptions = false;
-            tutorial2();
-        }
-        if (Input.GetKeyUp(KeyCode.Alpha3) && tutorialOptions == true)
-        {
-            tutorialOptions = false;
-            tutorial3();
-        }
-        if (Input.GetKeyUp(KeyCode.Alpha4) && tutorialOptions == true)
-        {
-            tutorialOptions = false;
-            tutorial4();
-        }
-        if (Input.GetKeyUp(KeyCode.Alpha5) && tutorialOptions == true)
-        {
-            tutorialOptions = false;
-            tutorial5();
+        if ( tutorialOptions == true)
+        {//This part will be the pauseStuff are you sure...
+            if (Input.GetKeyUp(KeyCode.Alpha1))
+            {
+                menuInteraction.Play();
+                tutorialOptions = false;
+                tutorial1();
+            }
+            if (Input.GetKeyUp(KeyCode.Alpha2))
+            {
+                menuInteraction.Play();
+                tutorialOptions = false;
+                tutorial2();
+            }
+            if (Input.GetKeyUp(KeyCode.Alpha3))
+            {
+                menuInteraction.Play();
+                tutorialOptions = false;
+                tutorial3();
+            }
+            if (Input.GetKeyUp(KeyCode.Alpha4))
+            {
+                menuInteraction.Play();
+                tutorialOptions = false;
+                tutorial4();
+            }
+            if (Input.GetKeyUp(KeyCode.Alpha5))
+            {
+                menuInteraction.Play();
+                tutorialOptions = false;
+                tutorial5();
+            }
         }
         #endregion
         #endregion
@@ -280,15 +359,25 @@ public class GameControllerLS : MonoBehaviour
     }
     public void tutorial2()
     {//Turrets
-        SceneManager.LoadScene("Tutorial2");
+        if (PlayerPrefs.GetInt("level1") == 1)
+        {
+            SceneManager.LoadScene("Tutorial2");
+        }
     }
     public void tutorial3()
     {//Shields
-        Debug.Log("tutorial 3");
+        if (PlayerPrefs.GetInt("level2") == 1)
+        {
+            PlayerPrefs.SetInt("distanceLeft", Random.Range(40, 100));
+            SceneManager.LoadScene("Tutorial3");
+        }
     }
     public void tutorial4()
     {//Energy Management
-        Debug.Log("tutorial 4");
+        if (PlayerPrefs.GetInt("level3") == 1)
+        {
+            SceneManager.LoadScene("Tutorial4");
+        }
     }
     public void tutorial5()
     {//Crew and ship customization
@@ -297,11 +386,7 @@ public class GameControllerLS : MonoBehaviour
     #endregion
 }
 
-
-
-
-
-/*
+/* Notes
     -I will have the 4 placeholder GameObjects represent my focus
 
     -The saved data I won't need to remember until I add ship customization

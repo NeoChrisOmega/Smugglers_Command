@@ -6,50 +6,41 @@ public class GameControllerMM : MonoBehaviour
 {
     public Camera mainCamera;//This is the camera
     float yRotation;//This keeps track of where the camera rotation is
+    public AudioSource menuInteraction;
 
     void Update()
     {//This is for all the button press checks
         if (Input.GetKeyUp(KeyCode.Alpha1))
         {
-            MoveBack();
+            menuInteraction.Play();
+            StopAllCoroutines();
+            StartCoroutine(MoveToMainMenu());
+        }
+        if (Input.GetKeyUp(KeyCode.Alpha3))
+        {
+            menuInteraction.Play();
+            StopAllCoroutines();
+            StartCoroutine(MoveToCredits());
         }
         #region OtherInputs
         if (Input.GetKeyUp(KeyCode.Alpha2))
         {
-            MoveLeft();
-        }
-        if (Input.GetKeyUp(KeyCode.Alpha3))
-        {
-            MoveRight();
+            menuInteraction.Play();
+            StopAllCoroutines();
+            StartCoroutine(MoveToInstructions());
         }
         if (Input.GetKeyUp(KeyCode.Return))
         {
+            menuInteraction.Play();
             if (yRotation <1 && yRotation >-1)
             {
-                StartGame();
+                PlayerPrefs.DeleteAll();
+                Debug.Log("Prefabs Deleted");
+                SceneManager.LoadScene("LevelSelect");
             }
         }
         #endregion
     }
-    #region TheMovements
-    public void StartGame ()
-    {//Goes to the LevelSelect scene, should pass off any information that LS GameController should know
-        SceneManager.LoadScene("LevelSelect");
-    }
-    #region OtherMovements
-    public void MoveLeft()
-    {//Turns the camera to the left side
-        StartCoroutine(MoveToInstructions());
-    }
-    public void MoveRight()
-    {//Turns the camera to the rights side
-        StartCoroutine(MoveToCredits());
-    }
-    public void MoveBack()
-    {//Turns the camera back to the center
-        StartCoroutine(MoveToMainMenu());
-    }
-    #endregion
 
     IEnumerator MoveToInstructions()
     {//In order to get the realtime update of the camera moving, I need to IEnumerator the action
@@ -86,5 +77,4 @@ public class GameControllerMM : MonoBehaviour
             }
     }
     #endregion
-#endregion
 }

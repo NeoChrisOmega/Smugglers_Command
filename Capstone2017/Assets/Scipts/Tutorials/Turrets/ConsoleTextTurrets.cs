@@ -23,7 +23,10 @@ public class ConsoleTextTurrets : MonoBehaviour
             toKillText.text = " Enemies to kill: " + enemiesLeft + "\n Cargo Condition: " + cargoCondition;
         }
         else
+        {
+            PlayerPrefs.SetInt("level2", 1);
             gameController.GameOver();
+        }
 
     }
     
