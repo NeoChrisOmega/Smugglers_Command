@@ -506,7 +506,7 @@ public class FixShieldT4 : MonoBehaviour
                             else if (oc_rx == 9)
                             {
                                 //ADDTOGAME
-                                //gameController.ResetCars();
+                                //gameController.ShieldUp(true);
                                 //GameControllerT4  ShieldsUp();
                                 carOrange.transform.position = new Vector3(carOrange.transform.position.x + 1, carOrange.transform.position.y, carOrange.transform.position.z);
                                 gameController.PauseGame(true);

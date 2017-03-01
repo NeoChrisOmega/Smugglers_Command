@@ -1,27 +1,49 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class KillShip : MonoBehaviour
+public class EnemyShip : MonoBehaviour
 {
     public Rigidbody bullet;//Makes it have physics
     public float bulletExit;
     public MeshRenderer MeshMe;
 
+    Transform turret;
+    Transform target;
+    float timer;
+
     // Use this for initialization
     void Start()
     {
+        turret = this.transform;
+        target = GameObject.Find("Ship").transform;
         MeshMe.material = MeshMe.materials[2];
         bulletExit = this.transform.position.z + 1.5f;
-        InvokeRepeating("Shoot", 10, 10);
+        //InvokeRepeating("Shoot", 10, 10);
     }
 
+    void Update()
+    {
+        turret.transform.LookAt(target);
+        timer += Time.deltaTime;
+        if (timer>10.0f)
+        {
+            Rigidbody newBullet = Instantiate(bullet, new Vector3(this.transform.position.x, this.transform.position.y, bulletExit), this.transform.rotation) as Rigidbody;
+            newBullet.AddRelativeForce(Vector3.forward * 30, ForceMode.VelocityChange);
+            timer = 0.0f;
+        }
+    }
+    void OnTriggerEnter(Collider col)
+    {//Checks to see if you hit, if you did destroys it
+        Destroy(this.gameObject);
+    }
+
+    /*
     void Shoot()
     {
-        StartCoroutine(Shooting());
+        //StartCoroutine(Shooting());
     }
-
     IEnumerator Shooting()
-    {//                                                                          This mess makes it one z position farther than where it was before
+    {//           
         Rigidbody newBullet = Instantiate(bullet, new Vector3(this.transform.position.x, this.transform.position.y, bulletExit), bullet.rotation) as Rigidbody;
         //newBullet.AddRelativeTorque(transform.forward * -5, ForceMode.VelocityChange);
         newBullet.AddRelativeForce(transform.forward * 5, ForceMode.VelocityChange);
@@ -36,9 +58,5 @@ public class KillShip : MonoBehaviour
         }
         Debug.Log("Called Mesh");
         MeshMe.material = MeshMe.materials[1];
-    }
-    void OnTriggerEnter(Collider col)
-    {//Checks to see if you hit, if you did destroys it
-        Destroy(this.gameObject);
-    }
+    }*/
 }

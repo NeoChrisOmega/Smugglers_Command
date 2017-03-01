@@ -7,11 +7,13 @@ public class AimShipT3 : MonoBehaviour
     bool isMoving;
     public GameControllerT3 gameController;
     public Rigidbody bullet;//Makes it have physics
+    bool shooting = false;
     public SpriteRenderer spriteRend;
     public Sprite aiming;
     public Sprite shoot;
     public Transform bulletExit;
-    
+    float timer = 0;
+
     void Start()
     {
         spriteRend.sprite = aiming;
@@ -63,7 +65,17 @@ public class AimShipT3 : MonoBehaviour
             #endregion
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                StartCoroutine(Shooting());
+                if (shooting !=true)
+                {
+                    shooting = true;
+                    StartCoroutine(Shooting());
+                }
+                timer += Time.deltaTime;
+                if (timer > 0.3f)
+                {
+                    timer = 0.0f;
+                    shooting = false;
+                }
             }
         }
     }
@@ -80,5 +92,11 @@ public class AimShipT3 : MonoBehaviour
             yield return null;
         }
         spriteRend.sprite = aiming;
+    }
+    public void OnTriggerEnter(Collider spaceObject)
+    {//If this collides with one of the objects, kill the object and damage ship
+        Debug.Log("Trigger Enter");
+        Destroy(spaceObject.gameObject);
+        gameController.GotHit(false);
     }
 }

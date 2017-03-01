@@ -6,11 +6,12 @@ public class MoveShipT3 : MonoBehaviour
     float currentX, currentY;
     bool isMoving;
     public GameControllerT3 gameController;
+    public GameObject ship;
     
     void Start()
     {
-        currentX = this.transform.position.x;
-        currentY = this.transform.position.y;
+        currentX = ship.transform.position.x;
+        currentY = ship.transform.position.y;
         isMoving = false;
     }
     void Update()
@@ -21,7 +22,7 @@ public class MoveShipT3 : MonoBehaviour
             {
                 if (currentX > -3)
                 {
-                    this.transform.position = new Vector3(currentX = currentX - 1, this.transform.position.y, this.transform.position.z);
+                    ship.transform.position = new Vector3(currentX = currentX - 1, ship.transform.position.y, ship.transform.position.z);
                 }
                 else
                     Debug.Log("Error Sound plays");
@@ -31,7 +32,7 @@ public class MoveShipT3 : MonoBehaviour
             {
                 if (currentX <= 3)
                 {
-                    this.transform.position = new Vector3(currentX = currentX + 1, this.transform.position.y, this.transform.position.z);
+                    ship.transform.position = new Vector3(currentX = currentX + 1, ship.transform.position.y, ship.transform.position.z);
                 }
                 else
                     Debug.Log("Error Sound plays");
@@ -40,7 +41,7 @@ public class MoveShipT3 : MonoBehaviour
             {
                 if (currentY <= 1.5)
                 {
-                    this.transform.position = new Vector3(this.transform.position.x, currentY = currentY + 1, this.transform.position.z);
+                    ship.transform.position = new Vector3(ship.transform.position.x, currentY = currentY + 1, ship.transform.position.z);
                 }
                 else
                     Debug.Log("Error Sound plays");
@@ -49,7 +50,7 @@ public class MoveShipT3 : MonoBehaviour
             {
                 if (currentY > -1.5)
                 {
-                    this.transform.position = new Vector3(this.transform.position.x, currentY = currentY - 1, this.transform.position.z);
+                    ship.transform.position = new Vector3(ship.transform.position.x, currentY = currentY - 1, ship.transform.position.z);
                 }
                 else
                     Debug.Log("Error Sound plays");
@@ -62,6 +63,6 @@ public class MoveShipT3 : MonoBehaviour
     {//If this collides with one of the objects, kill the object and damage ship
         Debug.Log("Trigger Enter");
         Destroy(spaceObject.gameObject);
-        gameController.GotHit();
+        gameController.GotHit(true);
     }
 }

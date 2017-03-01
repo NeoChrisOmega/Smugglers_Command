@@ -133,6 +133,6 @@ public class OLDMoveShipT3 : MonoBehaviour
     {//If this collides with one of the objects, kill the object and damage ship
         Debug.Log("Trigger Enter");
         Destroy(spaceObject.gameObject);
-        gameController.GotHit();
+        gameController.GotHit(true);
     }
 }
