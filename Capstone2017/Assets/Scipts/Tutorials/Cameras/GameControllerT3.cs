@@ -305,6 +305,6 @@ void Start()
 
     public void GameOver()
     {Debug.Log("Got called?");
-        Application.Quit();
+        SceneManager.LoadScene("MenuSystem");
     }
 }

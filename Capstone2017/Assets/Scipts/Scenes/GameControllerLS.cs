@@ -16,10 +16,10 @@ public class GameControllerLS : MonoBehaviour
     public GameObject tutorial3Option;
     public GameObject tutorial4Option;
     public GameObject chooseTutorialOptions1, chooseTutorialOptions2, chooseTutorialOptions3, chooseTutorialOptions4;
-
+    
     public Camera levelSelectCamera;//This is the camera
-    float yRotation;//This keeps track of where the camera rotation is
-    float xRotation;
+    int currentY;//This keeps track of where the camera rotation is
+    int currentX;
     bool isMoving;
 
     public AudioSource menuInteraction;
@@ -29,9 +29,9 @@ public class GameControllerLS : MonoBehaviour
 
     void Start()
     {
-        //This is for playtesting
-        PlayerPrefs.SetInt("Level2", 1);
-        //This is for playtesting
+        currentX = System.Convert.ToInt32(levelSelectCamera.transform.position.x);
+        currentY = System.Convert.ToInt32(levelSelectCamera.transform.position.y);
+        PlayerPrefs.SetInt("Level1", 1);
 
         if (PlayerPrefs.GetInt("level1") == 1)
         {
@@ -39,7 +39,7 @@ public class GameControllerLS : MonoBehaviour
         }
         else
         {
-            tutorial2Option.GetComponent<Image>().color = Color.grey;
+            tutorial2Option.GetComponent<Image>().color = Color.white;
         }
         if (PlayerPrefs.GetInt("level2") == 1)
         {
@@ -47,7 +47,7 @@ public class GameControllerLS : MonoBehaviour
         }
         else
         {
-            tutorial3Option.GetComponent<Image>().color = Color.grey;
+            tutorial3Option.GetComponent<Image>().color = Color.white;
         }
         if (PlayerPrefs.GetInt("level3") == 1)
         {
@@ -61,6 +61,7 @@ public class GameControllerLS : MonoBehaviour
 
     void Update()//I still need to update the x menus
     {//This is for all the button press checks
+        Debug.Log(currentX + "\n" + currentY);
         #region MoveCamera
         if (tutorialOptions == false)
         {
@@ -68,35 +69,33 @@ public class GameControllerLS : MonoBehaviour
             {
                 menuInteraction.Play();
                 StopAllCoroutines();
-                StartCoroutine("MoveBack");
+                StartCoroutine("MoveToMainMenu");
             }
-            #region OtherInputs
             else if (Input.GetKeyUp(KeyCode.Alpha2))
             {
                 menuInteraction.Play();
                 StopAllCoroutines();
-                StartCoroutine("MoveUp");
+                StartCoroutine("MoveToSave");
             }
             else if (Input.GetKeyUp(KeyCode.Alpha3))
             {
                 menuInteraction.Play();
                 StopAllCoroutines();
-                StartCoroutine("MoveLeft");
+                StartCoroutine("MoveToStore");
             }
             else if (Input.GetKeyUp(KeyCode.Alpha4))
             {
                 menuInteraction.Play();
                 StopAllCoroutines();
-                StartCoroutine("MoveRight");
+                StartCoroutine("MoveToTutorials");
             }
             else if (Input.GetKeyUp(KeyCode.Alpha5))
             {
                 menuInteraction.Play();
                 StopAllCoroutines();
-                StartCoroutine("MoveDown");
+                StartCoroutine("MoveToMissions");
             }
         }
-        #endregion
         #endregion
 
         #region SaveButtons
@@ -105,7 +104,7 @@ public class GameControllerLS : MonoBehaviour
             if (Input.GetKeyUp(KeyCode.Return))
             {
                 menuInteraction.Play();
-                if (yRotation < 1 && yRotation > -1 && xRotation < -1)
+                if (currentY == 30)
                 {
                     SaveGame();
                 }
@@ -113,7 +112,7 @@ public class GameControllerLS : MonoBehaviour
             else if (Input.GetKeyUp(KeyCode.Space))
             {
                 menuInteraction.Play();
-                if (yRotation < 1 && yRotation > -1 && xRotation < -1)
+                if (currentY == 30)
                 {
                     LoadGame();
                 }
@@ -121,7 +120,7 @@ public class GameControllerLS : MonoBehaviour
             else if (Input.GetKeyUp(KeyCode.Backspace))
             {
                 menuInteraction.Play();
-                if (yRotation < 1 && yRotation > -1 && xRotation < -1)
+                if (currentY == 30)
                 {
                     ExitGame();
                 }
@@ -130,27 +129,23 @@ public class GameControllerLS : MonoBehaviour
         #endregion
 
         #region TutorialButtons
-        if (Input.GetKeyUp(KeyCode.Backspace))
+        if (Input.GetKeyUp(KeyCode.Space))
         {
-            if (xRotation < 1 && xRotation > -1 && yRotation > 1)
+            if (currentX==35)
             {//This checks to see if you are on the tutorial screen
                 if (tutorialOptions == false)
                 {
-                    chooseTutorialOptions1.GetComponent<Image>().color = Color.grey;
-                    chooseTutorialOptions2.GetComponent<Image>().color = Color.grey;
-                    chooseTutorialOptions3.GetComponent<Image>().color = Color.grey;
-                    chooseTutorialOptions4.GetComponent<Image>().color = Color.grey;
-                    tutorialOptions = true;
+                    ToggleTutorialOptions(true);
                 }
                 else if (tutorialOptions == true)
                 {
-                    chooseTutorialOptions1.GetComponent<Image>().color = Color.white;
-                    chooseTutorialOptions2.GetComponent<Image>().color = Color.white;
-                    chooseTutorialOptions3.GetComponent<Image>().color = Color.white;
-                    chooseTutorialOptions4.GetComponent<Image>().color = Color.grey;
-                    tutorialOptions = false;
+                    ToggleTutorialOptions(false);
                 }
             }
+        }
+        if (currentX != 35)
+        {
+            ToggleTutorialOptions(false);
         }
         #region OtherInputs
         if ( tutorialOptions == true)
@@ -158,66 +153,72 @@ public class GameControllerLS : MonoBehaviour
             if (Input.GetKeyUp(KeyCode.Alpha1))
             {
                 menuInteraction.Play();
-                tutorialOptions = false;
+                ToggleTutorialOptions(false);
                 tutorial1();
             }
             if (Input.GetKeyUp(KeyCode.Alpha2))
             {
                 menuInteraction.Play();
-                tutorialOptions = false;
-                tutorial2();
+                ToggleTutorialOptions(false);
+                if (chooseTutorialOptions2.GetComponent<Image>().color == Color.grey)
+                {
+                    Debug.Log("errorSound.Play();");
+                }
+                else
+                    tutorial2();
             }
             if (Input.GetKeyUp(KeyCode.Alpha3))
             {
                 menuInteraction.Play();
-                tutorialOptions = false;
-                tutorial3();
+                ToggleTutorialOptions(false);
+                if (chooseTutorialOptions3.GetComponent<Image>().color == Color.grey)
+                {
+                    Debug.Log("errorSound.Play();");
+                }
+                else
+                    tutorial3();
             }
             if (Input.GetKeyUp(KeyCode.Alpha4))
             {
                 menuInteraction.Play();
-                tutorialOptions = false;
-                tutorial4();
+                ToggleTutorialOptions(false);
+                if (chooseTutorialOptions4.GetComponent<Image>().color == Color.grey)
+                {
+                    Debug.Log("errorSound.Play();");
+                }
+                else
+                    tutorial4();
             }
-            if (Input.GetKeyUp(KeyCode.Alpha5))
+            /*if (Input.GetKeyUp(KeyCode.Alpha5))
             {
                 menuInteraction.Play();
-                tutorialOptions = false;
-                tutorial5();
-            }
+                ToggleTutorialOptions(false);
+                Debug.Log("tutorial5();");
+            }*/
         }
         #endregion
         #endregion
 
+        #region MissionButtons
+        if (tutorialOptions == false)
+        {
+            if (currentY == -30)
+            {
+                if (Input.GetKeyUp(KeyCode.Return))
+                {
+                    menuInteraction.Play();
+                    StoryMode();
+                }
+            }
+        }
+        #endregion
     }
 
-    #region TheMovements
-    public void MoveLeft()
-    {//Turns the camera to the left side
-        StartCoroutine(MoveToStore());
-    }
-    #region OtherStuff
-    public void MoveRight()
-    {//Turns the camera to the rights side
-        StartCoroutine(MoveToTutorials());
-    }
-    public void MoveUp()
-    {//Turns the camera to the rights side
-        StartCoroutine(MoveToSave());
-    }
-    public void MoveDown()
-    {//Turns the camera to the rights side
-        StartCoroutine(MoveToMissions());
-    }
-    public void MoveBack()
-    {//Turns the camera back to the center
-        StartCoroutine(MoveToMainMenu());
-    }
+    #region SaveChoices
     public void SaveGame()
     {//Goes to the LevelSelect scene, should pass off any information that LS GameController should know
         Debug.Log("You Pressed Save");
     }
-    #region OtherMovements
     public void LoadGame()
     {//Goes to the LevelSelect scene, should pass off any information that LS GameController should know
         Debug.Log("You Pressed Load");
@@ -227,141 +228,37 @@ public class GameControllerLS : MonoBehaviour
         Application.Quit();
     }
     #endregion
-    #endregion
 
-    IEnumerator MoveToStore()
-    {//In order to get the realtime update of the camera moving, I need to IEnumerator the action
-        if (xRotation <= -.1)
-        {
-            while (xRotation <= 0)
-            {//This makes the movement an L shape when needed
-                levelSelectCamera.transform.eulerAngles = new Vector3(xRotation++, levelSelectCamera.transform.eulerAngles.y, 0);
-                yield return null;
-            }
-        }
-        else
-            while (xRotation >= 0)
-            {//This makes the movement an L shape when needed
-                levelSelectCamera.transform.eulerAngles = new Vector3(xRotation--, levelSelectCamera.transform.eulerAngles.y, 0);
-                yield return null;
-            }
-        while (yRotation >= -70)
-        {//keeps moving the camera until it hits the point I wanted
-            levelSelectCamera.transform.eulerAngles = new Vector3(levelSelectCamera.transform.eulerAngles.x, yRotation--, 0);
-            yield return null;//This is what updates the movement in realtime
-        }
-    }
-    #region OtherMovements
-    IEnumerator MoveToTutorials()
+    void ToggleTutorialOptions(bool toggle)
     {
-        if (xRotation < -1)
+        if (toggle == true)
         {
-            while (xRotation < 0)
-            {//This makes the movement an L shape when needed
-                levelSelectCamera.transform.eulerAngles = new Vector3(xRotation++, levelSelectCamera.transform.eulerAngles.y, 0);
-                yield return null;
-            }
+            chooseTutorialOptions1.GetComponent<Image>().color = Color.grey;
+            chooseTutorialOptions2.GetComponent<Image>().color = Color.grey;
+            chooseTutorialOptions3.GetComponent<Image>().color = Color.grey;
+            chooseTutorialOptions4.GetComponent<Image>().color = Color.grey;
+            tutorialOptions = true;
         }
-        else
-            while (xRotation > 0)
-            {//This makes the movement an L shape when needed
-                levelSelectCamera.transform.eulerAngles = new Vector3(xRotation--, levelSelectCamera.transform.eulerAngles.y, 0);
-                yield return null;
-            }
-        while (yRotation < 70)
+        if (toggle == false)
         {
-            levelSelectCamera.transform.eulerAngles = new Vector3(levelSelectCamera.transform.eulerAngles.x, yRotation++, 0);
-            yield return null;
+            chooseTutorialOptions1.GetComponent<Image>().color = Color.white;
+            chooseTutorialOptions2.GetComponent<Image>().color = Color.white;
+            chooseTutorialOptions3.GetComponent<Image>().color = Color.white;
+            chooseTutorialOptions4.GetComponent<Image>().color = Color.grey;
+            tutorialOptions = false;
         }
     }
-    IEnumerator MoveToSave()
-    {
-        if (yRotation < -1)
-        {
-            while (yRotation < 0)
-            {//This makes the movement an L shape when needed
-                levelSelectCamera.transform.eulerAngles = new Vector3(levelSelectCamera.transform.eulerAngles.x, yRotation++, 0);
-                yield return null;
-            }
-        }
-        else
-            while (yRotation > 0)
-            {//This makes the movement an L shape when needed
-                levelSelectCamera.transform.eulerAngles = new Vector3(levelSelectCamera.transform.eulerAngles.x, yRotation--, 0);
-                yield return null;
-            }
-        while (xRotation > -70)
-        {
-            levelSelectCamera.transform.eulerAngles = new Vector3(xRotation--, levelSelectCamera.transform.eulerAngles.y, 0);
-            yield return null;
-        }
-    }
-    IEnumerator MoveToMissions()
-    {
-        if (yRotation < -1)
-        {
-            while (yRotation < 0)
-            {//This makes the movement an L shape when needed
-                levelSelectCamera.transform.eulerAngles = new Vector3(levelSelectCamera.transform.eulerAngles.x, yRotation++, 0);
-                yield return null;
-            }
-        }
-        else
-            while (yRotation > 0)
-            {//This makes the movement an L shape when needed
-                levelSelectCamera.transform.eulerAngles = new Vector3(levelSelectCamera.transform.eulerAngles.x, yRotation--, 0);
-                yield return null;
-            }
-        while (xRotation < 70)
-        {
-            levelSelectCamera.transform.eulerAngles = new Vector3(xRotation++, levelSelectCamera.transform.eulerAngles.y, 0);
-            yield return null;
-        }
-    }
-    IEnumerator MoveToMainMenu()
-    {
-        if (yRotation < -1)
-        {//This checks to see if the camera is on the left of the main menu
-            while (yRotation < 0)
-            {
-                levelSelectCamera.transform.eulerAngles = new Vector3(levelSelectCamera.transform.eulerAngles.x, yRotation++, 0);
-                yield return null;
-            }
-        }
-        else//This checks to see if the camera is on the right of the main menu
-            while (yRotation > 0)
-            {
-                levelSelectCamera.transform.eulerAngles = new Vector3(levelSelectCamera.transform.eulerAngles.x, yRotation--, 0);
-                yield return null;
-            }
-        if (xRotation < -1)
-        {//This checks to see if the camera is on the down of the main menu
-            while (xRotation < 0)
-            {
-                levelSelectCamera.transform.eulerAngles = new Vector3(xRotation++, levelSelectCamera.transform.eulerAngles.y, 0);
-                yield return null;
-            }
-        }
-        else//This checks to see if the camera is on the up of the main menu
-            while (xRotation > 0)
-            {
-                levelSelectCamera.transform.eulerAngles = new Vector3(xRotation--, levelSelectCamera.transform.eulerAngles.y, 0);
-                yield return null;
-            }
-    }
-    #endregion
-    #endregion
 
     #region TutorialChoices
     public void tutorial1()
     {//Engines
-        SceneManager.LoadScene("Tutorial1");
+        //SceneManager.LoadScene("Tutorial1");
     }
     public void tutorial2()
     {//Turrets
         if (PlayerPrefs.GetInt("level1") == 1)
         {
-            SceneManager.LoadScene("Tutorial2");
+            //SceneManager.LoadScene("Tutorial2");
         }
     }
     public void tutorial3()
@@ -369,41 +266,146 @@ public class GameControllerLS : MonoBehaviour
         if (PlayerPrefs.GetInt("level2") == 1)
         {
             PlayerPrefs.SetInt("distanceLeft", Random.Range(40, 100));
-            SceneManager.LoadScene("Tutorial3");
+            //SceneManager.LoadScene("Tutorial3");
         }
     }
     public void tutorial4()
     {//Energy Management
         if (PlayerPrefs.GetInt("level3") == 1)
         {
-            SceneManager.LoadScene("Tutorial4");
+            //SceneManager.LoadScene("Tutorial4");
         }
     }
-    public void tutorial5()
+    /*public void tutorial5()
     {//Crew and ship customization
         Debug.Log("tutorial 5");
+    }*/
+    #endregion
+
+    void StoryMode()
+    {
+        SceneManager.LoadScene("StoryTutorial");
+    }
+
+    #region Movements
+    IEnumerator MoveToStore()
+    {//In order to get the realtime update of the camera moving, I need to IEnumerator the action
+        if (currentY < 0)
+        {
+            while (currentY < 0)
+            {//This makes the movement an L shape when needed
+                levelSelectCamera.transform.position = new Vector3(levelSelectCamera.transform.position.x, currentY += 5, levelSelectCamera.transform.position.z);
+                yield return null;
+            }
+        }
+        else
+            while (currentY > 0)
+            {
+                levelSelectCamera.transform.position = new Vector3(levelSelectCamera.transform.position.x, currentY -= 5, levelSelectCamera.transform.position.z);
+                yield return null;
+            }
+        while (currentX > -35)
+        {//keeps moving the camera until it hits the point I wanted
+            levelSelectCamera.transform.position = new Vector3(currentX -= 5, levelSelectCamera.transform.position.y , levelSelectCamera.transform.position.z);
+            yield return null;
+        }
+    }
+    IEnumerator MoveToTutorials()
+    {
+        if (currentY < 0)
+        {
+            while (currentY < 0)
+            {//This makes the movement an L shape when needed
+                levelSelectCamera.transform.position = new Vector3(levelSelectCamera.transform.position.x, currentY += 5, levelSelectCamera.transform.position.z);
+                yield return null;
+            }
+        }
+        else
+            while (currentY > 0)
+            {
+                levelSelectCamera.transform.position = new Vector3(levelSelectCamera.transform.position.x, currentY -= 5, levelSelectCamera.transform.position.z);
+                yield return null;
+            }
+        while (currentX < 35)
+        {
+            levelSelectCamera.transform.position = new Vector3(currentX += 5, levelSelectCamera.transform.eulerAngles.y , levelSelectCamera.transform.position.z);
+            yield return null;
+        }
+    }
+    IEnumerator MoveToSave()
+    {
+        if (currentX < 0)
+        {
+            while (currentX < 0)
+            {//This makes the movement an L shape when needed
+                levelSelectCamera.transform.position = new Vector3(currentX += 5, levelSelectCamera.transform.position.y , levelSelectCamera.transform.position.z);
+                yield return null;
+            }
+        }
+        else
+            while (currentX > 0)
+            {
+                levelSelectCamera.transform.position = new Vector3(currentX -= 5, levelSelectCamera.transform.position.y, levelSelectCamera.transform.position.z);
+                yield return null;
+            }
+        while (currentY < 30)
+        {
+            levelSelectCamera.transform.position = new Vector3(levelSelectCamera.transform.position.x, currentY +=5 , levelSelectCamera.transform.position.z);
+            yield return null;
+        }
+    }
+    IEnumerator MoveToMissions()
+    {
+        if (currentX < 0)
+        {
+            while (currentX < 0)
+            {//This makes the movement an L shape when needed
+                levelSelectCamera.transform.position = new Vector3(currentX += 5, levelSelectCamera.transform.position.y, levelSelectCamera.transform.position.z);
+                yield return null;
+            }
+        }
+        else
+            while (currentX > 0)
+            {
+                levelSelectCamera.transform.position = new Vector3(currentX -= 5, levelSelectCamera.transform.position.y, levelSelectCamera.transform.position.z);
+                yield return null;
+            }
+        while (currentY > -30)
+        {
+            levelSelectCamera.transform.position = new Vector3(levelSelectCamera.transform.position.x, currentY -= 5, levelSelectCamera.transform.position.z);
+            yield return null;
+        }
+    }
+    IEnumerator MoveToMainMenu()
+    {
+        if (currentY < 0)
+        {
+            while (currentY < 0)
+            {//This makes the movement an L shape when needed
+                levelSelectCamera.transform.position = new Vector3(levelSelectCamera.transform.position.x, currentY += 5, levelSelectCamera.transform.position.z);
+                yield return null;
+            }
+        }
+        else
+            while (currentY > 0)
+            {
+                levelSelectCamera.transform.position = new Vector3(levelSelectCamera.transform.position.x, currentY -= 5, levelSelectCamera.transform.position.z);
+                yield return null;
+            }
+        if (currentX < 0)
+        {
+            while (currentX < 0)
+            {//This makes the movement an L shape when needed
+                levelSelectCamera.transform.position = new Vector3(currentX += 5, levelSelectCamera.transform.position.y, levelSelectCamera.transform.position.z);
+                yield return null;
+            }
+        }
+        else
+            while (currentX > 0)
+            {
+                levelSelectCamera.transform.position = new Vector3(currentX -= 5, levelSelectCamera.transform.position.y, levelSelectCamera.transform.position.z);
+                yield return null;
+            }
     }
     #endregion
 }
-
-/* Notes
-    -I will have the 4 placeholder GameObjects represent my focus
-
-    -The saved data I won't need to remember until I add ship customization
-
-    -Tutorials I will start with <<<<<<<
-
-    -MissionOptions I should do once I have the tutorial completed
-
-    -Ship data I am leaving for after I have the gameplay finished
-
-
-
-
-
-
-
-
-
-
-*/

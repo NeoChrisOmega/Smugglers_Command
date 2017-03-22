@@ -71,7 +71,7 @@ public class AimShipT3 : MonoBehaviour
                     StartCoroutine(Shooting());
                 }
                 timer += Time.deltaTime;
-                if (timer > 0.3f)
+                if (timer > 0.1f)
                 {
                     timer = 0.0f;
                     shooting = false;
@@ -85,7 +85,7 @@ public class AimShipT3 : MonoBehaviour
         newBullet.AddForce(transform.forward * -30f, ForceMode.VelocityChange);
         spriteRend.sprite = shoot;
         float counter = 0f;
-        float length = .1f;
+        float length = .05f;
         while (counter <= length)
         {//keeps the loop going until real time has met the desired length
             counter += Time.deltaTime;

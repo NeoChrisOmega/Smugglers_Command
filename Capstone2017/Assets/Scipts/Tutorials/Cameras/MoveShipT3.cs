@@ -22,7 +22,7 @@ public class MoveShipT3 : MonoBehaviour
             {
                 if (currentX > -3)
                 {
-                    ship.transform.position = new Vector3(currentX = currentX - 1, ship.transform.position.y, ship.transform.position.z);
+                    ship.transform.position = new Vector3(currentX -= .5f, ship.transform.position.y, ship.transform.position.z);
                 }
                 else
                     Debug.Log("Error Sound plays");
@@ -32,7 +32,7 @@ public class MoveShipT3 : MonoBehaviour
             {
                 if (currentX <= 3)
                 {
-                    ship.transform.position = new Vector3(currentX = currentX + 1, ship.transform.position.y, ship.transform.position.z);
+                    ship.transform.position = new Vector3(currentX += .5f, ship.transform.position.y, ship.transform.position.z);
                 }
                 else
                     Debug.Log("Error Sound plays");
@@ -41,7 +41,7 @@ public class MoveShipT3 : MonoBehaviour
             {
                 if (currentY <= 1.5)
                 {
-                    ship.transform.position = new Vector3(ship.transform.position.x, currentY = currentY + 1, ship.transform.position.z);
+                    ship.transform.position = new Vector3(ship.transform.position.x, currentY += .5f, ship.transform.position.z);
                 }
                 else
                     Debug.Log("Error Sound plays");
@@ -50,7 +50,7 @@ public class MoveShipT3 : MonoBehaviour
             {
                 if (currentY > -1.5)
                 {
-                    ship.transform.position = new Vector3(ship.transform.position.x, currentY = currentY - 1, ship.transform.position.z);
+                    ship.transform.position = new Vector3(ship.transform.position.x, currentY -= .5f, ship.transform.position.z);
                 }
                 else
                     Debug.Log("Error Sound plays");
