@@ -16,8 +16,10 @@ public class MoveShipT3 : MonoBehaviour
     }
     void Update()
     {
-        if (gameController.paused != true && gameController.frontCamera.enabled == true)
+        //Debug.Log(gameController.paused + "\n" + gameController.focusedCamera.material);
+        if (gameController.paused != true && gameController.focusedCameraNum == 1)
         {
+            //Debug.Log("Good");
             if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
             {
                 if (currentX > -3)
@@ -63,6 +65,6 @@ public class MoveShipT3 : MonoBehaviour
     {//If this collides with one of the objects, kill the object and damage ship
         Debug.Log("Trigger Enter");
         Destroy(spaceObject.gameObject);
-        gameController.GotHit(true);
+        StartCoroutine(gameController.GotHit(true));
     }
 }

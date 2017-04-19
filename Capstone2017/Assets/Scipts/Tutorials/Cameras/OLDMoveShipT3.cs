@@ -15,7 +15,7 @@ public class OLDMoveShipT3 : MonoBehaviour
     }
     void Update()
     {
-        if (gameController.paused != true && gameController.frontCamera.enabled == true)
+        if (gameController.paused != true && gameController.focusedCamera.enabled == true)
         {
             #region MovementAndRestrictions
             if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A))

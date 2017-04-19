@@ -5,7 +5,7 @@ public class EnemyShip : MonoBehaviour
 {
     public Rigidbody bullet;//Makes it have physics
     public float bulletExit;
-    public MeshRenderer MeshMe;
+    //public MeshRenderer MeshMe;
 
     Transform turret;
     Transform target;
@@ -16,7 +16,7 @@ public class EnemyShip : MonoBehaviour
     {
         turret = this.transform;
         target = GameObject.Find("Ship").transform;
-        MeshMe.material = MeshMe.materials[2];
+        //MeshMe.material = MeshMe.materials[2];
         bulletExit = this.transform.position.z + 1.5f;
         //InvokeRepeating("Shoot", 10, 10);
     }
@@ -35,6 +35,7 @@ public class EnemyShip : MonoBehaviour
     void OnTriggerEnter(Collider col)
     {//Checks to see if you hit, if you did destroys it
         Destroy(this.gameObject);
+        Destroy(col.gameObject);
     }
 
     /*

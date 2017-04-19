@@ -18,7 +18,7 @@ public class GameControllerMM : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(menus.transform.position.x);
+        //Debug.Log(menus.transform.position.x);
         #region Inputs
         if (Input.GetKeyUp(KeyCode.Alpha1))
         {

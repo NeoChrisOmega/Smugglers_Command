@@ -13,7 +13,7 @@ public class KillObject : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {//This will destroy the object when it goes too far out in space
-        if (this.transform.position.z <= -900)
+        if (this.transform.position.z <= -400)
         {
             Destroy(this.gameObject);
         }

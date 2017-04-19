@@ -27,29 +27,37 @@ public class GameControllerT3 : MonoBehaviour
     public Transform[] spawnpoints;// This is a list of the empty gameobject posisions//public GameObject spaceObject; // This is the EnemyShip prefab
     public GameObject foeShip;
     public GameObject[] filledPoints;
-    public Camera frontCamera, backCamera, interiorCamera;
+    public MeshRenderer focusedCamera, leftCamera, rightCamera;
+    public int focusedCameraNum;
+    public Material frontScreen, backScreen, interiorScreen;
     #endregion
     #region ShieldSystem Variables
-    public GameObject shipIconFront, shipIconBack;
-    public Sprite frontOfShip, backOfShip, frontDamaged, backDamaged, shieldDown1, shieldDown2;
+    //public GameObject shipIconFront, shipIconBack;
+    //public Sprite frontOfShip, backOfShip, frontDamaged, backDamaged, shieldDown1, shieldDown2;
     public int shieldLayers;
-    public GameObject layersOfShield;
-    public Sprite threeShieldLayers, thirdLayerDestroyed, twoShieldLayers, secondLayerDestroyed, oneShieldLayer, lastLayerDestroyed;
-    public string cargoText;
+    public GameObject shipShield;
+    public Sprite threeShieldLayers, thirdLayerDestroyed, twoShieldLayers, secondLayerDestroyed, oneShieldLayer, lastLayerDestroyed, shipExposed, shipDamaged;
+    public GameObject cargoCond1, cargoCond2, cargoCond3;
+    public string lightSpeedText;
     #endregion
     #endregion
 
 void Start()
     {
         #region Ship Setup
-        cargoText = "Good";
+        shieldLayers = 3;
+        PlayerPrefs.SetInt("cargoText", 3);
         Time.timeScale = 0;
         PauseGame(true);
         InvokeRepeating("CreateTheObject", 1.0f, 2.0f);
         InvokeRepeating("CreateTheShip", 5f, 4.0f);
-        frontCamera.enabled = true;
-        backCamera.enabled = false;
-        interiorCamera.enabled = false;
+        focusedCamera.material = frontScreen;
+        leftCamera.material = backScreen;
+        rightCamera.material = interiorScreen;
+        focusedCameraNum = 1;
+        cargoCond1.SetActive(true);
+        cargoCond2.SetActive(true);
+        cargoCond3.SetActive(true);
         #endregion
 
         #region Spawn Setup
@@ -102,6 +110,7 @@ void Start()
     }
     void Update()
     {
+        Debug.Log(shieldLayers);
         if (paused == true && Input.GetKeyUp(KeyCode.Return))
         {
             Time.timeScale = 1;
@@ -119,23 +128,26 @@ void Start()
         if (paused == false && Input.GetKeyUp(KeyCode.Alpha1))
         {
             cameraSwitching.Play();
-            frontCamera.enabled = true;
-            backCamera.enabled = false;
-            interiorCamera.enabled = false;
+            focusedCamera.material = frontScreen;
+            leftCamera.material = backScreen;
+            rightCamera.material = interiorScreen;
+            focusedCameraNum = 1;
         }
         else if (paused == false && Input.GetKeyUp(KeyCode.Alpha2))
         {
             cameraSwitching.Play();
-            frontCamera.enabled = false;
-            backCamera.enabled = true;
-            interiorCamera.enabled = false;
+            focusedCamera.material = backScreen;
+            leftCamera.material = frontScreen;
+            rightCamera.material = interiorScreen;
+            focusedCameraNum = 2;
         }
         else if (paused == false && Input.GetKeyUp(KeyCode.Alpha3))
         {
             cameraSwitching.Play();
-            frontCamera.enabled = false;
-            backCamera.enabled = false;
-            interiorCamera.enabled = true;
+            focusedCamera.material = interiorScreen;
+            leftCamera.material = frontScreen;
+            rightCamera.material = backScreen;
+            focusedCameraNum = 3;
         }
     }
     #endregion
@@ -160,7 +172,7 @@ void Start()
         }
         return newSpawn;
     }
-#endregion
+    #endregion
 
     #region Ship Spawning
     void CreateTheShip()
@@ -186,123 +198,88 @@ void Start()
     #endregion
     #endregion
     
-    public void GotHit(bool front)
+    public IEnumerator GotHit(bool front)
     {
-        consoleText.DamageCargo();
-        if (front == true)
-        {
-            StartCoroutine(DamageShip(true));
-        }
-        else
-            StartCoroutine(DamageShip(false));
-        float timer1 = 0; 
-        timer1 += Time.deltaTime;
-        if (timer1 > 1.0f)
-        {
-            timer1 = 0.0f;
-        }
-
         if (shieldLayers >=1)
         {
-            shieldLayers--;
+            Debug.Log("Within shield check");
             if (shieldLayers == 3)
             {
-                layersOfShield.GetComponent<SpriteRenderer>().sprite = thirdLayerDestroyed;
-                float timer2 = 0;
-                timer2 += Time.deltaTime;
-                if (timer2 > 1.0f)
-                {
-                    timer2 = 0.0f;
-                }
-                layersOfShield.GetComponent<SpriteRenderer>().sprite = twoShieldLayers;
+                Debug.Log("shieldLayer = 3");
+                shipShield.GetComponent<SpriteRenderer>().sprite = thirdLayerDestroyed;
+                yield return null;
+                shipShield.GetComponent<SpriteRenderer>().sprite = twoShieldLayers;
+                yield return null;
             }
             else if (shieldLayers == 2)
             {
-                layersOfShield.GetComponent<SpriteRenderer>().sprite = secondLayerDestroyed;
-                float timer2 = 0;
-                timer2 += Time.deltaTime;
-                if (timer2 > 1.0f)
-                {
-                    timer2 = 0.0f;
-                }
-                layersOfShield.GetComponent<SpriteRenderer>().sprite = oneShieldLayer;
+                Debug.Log("shieldLayer = 2");
+                shipShield.GetComponent<SpriteRenderer>().sprite = secondLayerDestroyed;
+                yield return null;
+                shipShield.GetComponent<SpriteRenderer>().sprite = oneShieldLayer;
+                yield return null;
             }
             else
             {
-                layersOfShield.GetComponent<SpriteRenderer>().sprite = lastLayerDestroyed;
-                float timer2 = 0;
-                timer2 += Time.deltaTime;
-                if (timer2 > 1.0f)
-                {
-                    timer2 = 0.0f;
-                }
-                layersOfShield.GetComponent<SpriteRenderer>().sprite = null;
+                Debug.Log("shieldLayer = 1");
+                shipShield.GetComponent<SpriteRenderer>().sprite = lastLayerDestroyed;
+                yield return null;
+                shipShield.GetComponent<SpriteRenderer>().sprite = shipExposed;
+                yield return null;
             }
+            shieldLayers--;
         }
         else
         {
-            
+            Debug.Log("Why?");
             ShieldUp(false);
             if (PlayerPrefs.GetInt("cargoText") == 3)
             {
-                cargoText = "Fair";
+                cargoCond1.SetActive(false);
+                cargoCond2.SetActive(true);
+                cargoCond3.SetActive(true);
+                yield return null;
                 PlayerPrefs.SetInt("cargoText", 2);
             }
             else if (PlayerPrefs.GetInt("cargoText") == 2)
             {
-                cargoText = "Poor";
+                cargoCond1.SetActive(false);
+                cargoCond2.SetActive(false);
+                cargoCond3.SetActive(true);
+                yield return null;
                 PlayerPrefs.SetInt("cargoText", 1);
-            }
-            else if (PlayerPrefs.GetInt("cargoText") == 1)
-            {
-                PlayerPrefs.SetInt("cargoText", 0);
-                GameOver();
             }
             else
             {
-                Debug.Log("error in DamageCargo");
+                cargoCond1.SetActive(false);
+                cargoCond2.SetActive(false);
+                cargoCond3.SetActive(false);
+                yield return null;
+                PlayerPrefs.SetInt("cargoText", 0);
+                GameOver();
             }
-        }
-    }
-    IEnumerator DamageShip(bool front)
-    {
-        if (front == true)
-        {
-            shipIconFront.GetComponent<SpriteRenderer>().sprite = frontDamaged;
-        }
-        else
-            shipIconBack.GetComponent<SpriteRenderer>().sprite = backDamaged;
-        float counter = 0f;
-        float length = .1f;
-        while (counter <= length)
-        {//keeps the loop going until real time has met the desired length
-            counter += Time.deltaTime;
+            shipShield.GetComponent<SpriteRenderer>().sprite = shipDamaged;
+            yield return null;
+            yield return null;
+            shipShield.GetComponent<SpriteRenderer>().sprite = shipExposed;
             yield return null;
         }
-        if (front == true)
-        {
-            shipIconFront.GetComponent<SpriteRenderer>().sprite = frontOfShip;
-            //Checks Shield Level
-        }
-        else
-            shipIconBack.GetComponent<SpriteRenderer>().sprite = backOfShip;
     }
     public void ShieldUp(bool shield)
     {
         if (shield == true)
         {
-            shipIconFront.GetComponent<SpriteRenderer>().sprite = frontOfShip;
-            shipIconBack.GetComponent<SpriteRenderer>().sprite = backOfShip;
-            layersOfShield.GetComponent<SpriteRenderer>().sprite = threeShieldLayers;
+            //shipIconFront.GetComponent<SpriteRenderer>().sprite = frontOfShip;
+            //shipIconBack.GetComponent<SpriteRenderer>().sprite = backOfShip;
+            shipShield.GetComponent<SpriteRenderer>().sprite = threeShieldLayers;
             shieldLayers = 3;
         }
         else
         {
-            shipIconFront.GetComponent<SpriteRenderer>().sprite = frontDamaged;
-            shipIconBack.GetComponent<SpriteRenderer>().sprite = backDamaged;
+            //shipIconFront.GetComponent<SpriteRenderer>().sprite = frontDamaged;
+            //shipIconBack.GetComponent<SpriteRenderer>().sprite = backDamaged;
         }
     }
-
     public void GameOver()
     {Debug.Log("Got called?");
         SceneManager.LoadScene("MenuSystem");

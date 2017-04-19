@@ -21,7 +21,7 @@ public class OLDAimShipT3 : MonoBehaviour
     }
     void Update()
     {
-        if (gameController.paused != true && gameController.backCamera.enabled == true)
+        if (gameController.paused != true && gameController.leftCamera.enabled == true)
         {
             #region MovementAndRestrictions
             if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A))

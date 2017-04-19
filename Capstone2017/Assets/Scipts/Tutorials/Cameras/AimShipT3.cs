@@ -23,7 +23,7 @@ public class AimShipT3 : MonoBehaviour
     }
     void Update()
     {
-        if (gameController.paused != true && gameController.backCamera.enabled == true)
+        if (gameController.paused != true && gameController.focusedCameraNum == 2)
         {
             if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
             {
@@ -97,6 +97,6 @@ public class AimShipT3 : MonoBehaviour
     {//If this collides with one of the objects, kill the object and damage ship
         Debug.Log("Trigger Enter");
         Destroy(spaceObject.gameObject);
-        gameController.GotHit(false);
+        StartCoroutine(gameController.GotHit(false));
     }
 }

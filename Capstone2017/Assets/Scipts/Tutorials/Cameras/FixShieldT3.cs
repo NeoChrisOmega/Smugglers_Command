@@ -112,15 +112,15 @@ public class FixShieldT3 : MonoBehaviour
 
     void Update()
     {
-        /*Debug.Log("[0,0]" + carGrid[0, 0] + " [1,0]" + carGrid[1, 0] + " [2,0]" + carGrid[2, 0] + " [3,0]" + carGrid[3, 0] + " [4,0]" + carGrid[4, 0] + " [5,0]" + carGrid[5, 0]
+        Debug.Log("[0,0]" + carGrid[0, 0] + " [1,0]" + carGrid[1, 0] + " [2,0]" + carGrid[2, 0] + " [3,0]" + carGrid[3, 0] + " [4,0]" + carGrid[4, 0] + " [5,0]" + carGrid[5, 0]
               + "\n[0,1]" + carGrid[0, 1] + " [1,1]" + carGrid[1, 1] + " [2,1]" + carGrid[2, 1] + " [3,1]" + carGrid[3, 1] + " [4,1]" + carGrid[4, 1] + " [5,1]" + carGrid[5, 1]
               + "\n[0,2]" + carGrid[0, 2] + " [1,2]" + carGrid[1, 2] + " [2,2]" + carGrid[2, 2] + " [3,2]" + carGrid[3, 2] + " [4,2]" + carGrid[4, 2] + " [5,2]" + carGrid[5, 2]
               + "\n[0,3]" + carGrid[0, 3] + " [1,3]" + carGrid[1, 3] + " [2,3]" + carGrid[2, 3] + " [3,3]" + carGrid[3, 3] + " [4,3]" + carGrid[4, 3] + " [5,3]" + carGrid[5, 3]
               + "\n[0,4]" + carGrid[0, 4] + " [1,4]" + carGrid[1, 4] + " [2,4]" + carGrid[2, 4] + " [3,4]" + carGrid[3, 4] + " [4,4]" + carGrid[4, 4] + " [5,4]" + carGrid[5, 4]
               + "\n[0,5]" + carGrid[0, 5] + " [1,5]" + carGrid[1, 5] + " [2,5]" + carGrid[2, 5] + " [3,5]" + carGrid[3, 5] + " [4,5]" + carGrid[4, 5] + " [5,5]" + carGrid[5, 5]);
         Debug.Log("carlist[][]\nReddishPurpleCar:\nLeft: " + rpc_lx + ", " + rpc_ly + "\nRight: " + rpc_rx + ", " + rpc_ry + "\nYellowTruck:\nLeft:" + yt_ux + ", " + yt_uy + "\nRight: " + yt_dx + ", " + yt_dy);
-        */
-        if (gameController.paused != true && gameController.interiorCamera.enabled == true)
+        
+        if (gameController.paused != true && gameController.focusedCameraNum == 3)
         {
             if (Input.GetKeyUp(KeyCode.Space))
             {
@@ -132,7 +132,7 @@ public class FixShieldT3 : MonoBehaviour
                 {
                     isSelected = false;
                 }
-                Debug.Log("Selection?: "+isSelected);
+                //Debug.Log("Selection?: "+isSelected);
             }
 
             #region Moving The selection
@@ -172,6 +172,7 @@ public class FixShieldT3 : MonoBehaviour
                         Debug.Log("error sound");
                     }
                 }
+                Debug.Log("selectedCar is: " + selectedCar);
             }
             #endregion
 
@@ -510,7 +511,7 @@ public class FixShieldT3 : MonoBehaviour
                                 gameController.ShieldUp(true);
                                 //GameControllerT4  ShieldsUp();
                                 carOrange.transform.position = new Vector3(carOrange.transform.position.x + 1, carOrange.transform.position.y, carOrange.transform.position.z);
-                                gameController.PauseGame(true);
+                                //gameController.PauseGame(true);
                             }
                             else
                             {
